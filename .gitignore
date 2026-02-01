@@ -1,0 +1,11 @@
+# Django build artifacts
+staticfiles/
+__pycache__/
+*.pyc
+
+# Local db
+db.sqlite3
+
+# Mac
+.DS_Store
+
