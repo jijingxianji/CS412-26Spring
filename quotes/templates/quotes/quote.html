@@ -1,0 +1,12 @@
+
+
+{% extends "quotes/base.html" %}
+{% load static %}
+
+{% block content %}
+  <div class="card">
+    <p class="quote-text">“{{ item.text }}”</p>
+    <p class="quote-author">{{ item.author }}</p>
+    <img class="portrait" src="{% static item.image %}" alt="{{ item.author }}">
+  </div>
+{% endblock %}

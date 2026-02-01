@@ -1,0 +1,77 @@
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  background: #f7f7fb;
+  margin: 0;
+  padding: 0;
+  color: #222;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 28px 18px;
+}
+
+header h1 {
+  margin: 0 0 10px 0;
+  font-size: 44px;
+  letter-spacing: -0.5px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #2b59ff;
+  margin-right: 14px;
+  font-weight: 600;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+.card {
+  background: white;
+  border-radius: 14px;
+  padding: 18px 18px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+  margin-top: 18px;
+}
+
+.quote-text {
+  font-size: 26px;
+  line-height: 1.35;
+  margin: 0 0 10px 0;
+}
+
+.quote-author {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 14px 0;
+  color: #111;
+}
+
+img.portrait {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 12px;
+  display: block;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 800px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.small-img {
+  width: 100%;
+  max-width: 260px;
+  border-radius: 10px;
+  display: block;
+}
