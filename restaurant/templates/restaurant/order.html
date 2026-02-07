@@ -1,0 +1,61 @@
+{% extends "restaurant/base.html" %}
+{% block content %}
+  <h2>Order</h2>
+
+  <form method="POST" action="confirmation">
+    {% csrf_token %}
+
+    <h3>Pizza Flavors (choose slice or whole)</h3>
+    <p style="margin-top:0;">Slice: ${{ pizza_prices.slice }} | Whole: ${{ pizza_prices.whole }}</p>
+
+    {% for p in pizzas %}
+      <div style="margin-bottom:10px;">
+        <label><strong>{{ p.name }}</strong></label><br>
+        <select name="pizza_{{ p.id }}">
+          {% for val, label in pizza_select_values %}
+            <option value="{{ val }}">{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    {% endfor %}
+
+    <h3>Extra Toppings</h3>
+    {% for t in toppings %}
+      <label>
+        <input type="checkbox" name="toppings" value="{{ t.id }}">
+        {{ t.name }} (+${{ t.price }})
+      </label><br>
+    {% endfor %}
+
+    <h3>Desserts</h3>
+    {% for d in desserts %}
+      <label>
+        <input type="checkbox" name="desserts" value="{{ d.id }}">
+        {{ d.name }} — ${{ d.price }}
+      </label><br>
+    {% endfor %}
+
+    <h3>Drinks</h3>
+    {% for d in drinks %}
+      <label>
+        <input type="checkbox" name="drinks" value="{{ d.id }}">
+        {{ d.name }} — ${{ d.price }}
+      </label><br>
+    {% endfor %}
+
+    <h3>Daily Special (random)</h3>
+      <label>
+        <input type="checkbox" name="daily_special" value="yes">
+        {{ special.name }} — ${{ special.price }}
+      </label>
+    <p style="margin-top:4px;">{{ special.desc }}</p>
+
+    <h3>Customer Info</h3>
+    <label>Name: <input type="text" name="customer_name" required></label><br>
+    <label>Phone: <input type="text" name="customer_phone" required></label><br>
+    <label>Email: <input type="email" name="customer_email" required></label><br>
+
+    <br>
+    <button type="submit">Place Order</button>
+  </form>
+{% endblock %}

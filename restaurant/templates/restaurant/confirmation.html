@@ -1,0 +1,63 @@
+{% extends "restaurant/base.html" %}
+{% block content %}
+  <h2>Confirmation</h2>
+
+  <h3>Ordered Items</h3>
+  <ul>
+    {% for it in ordered %}
+      <li>{{ it.name }} — ${{ it.price }}</li>
+    {% empty %}
+      <li>(No pizza selected)</li>
+    {% endfor %}
+  </ul>
+
+  {% if toppings %}
+    <p><strong>Toppings:</strong></p>
+    <ul>
+      {% for t in toppings %}
+        <li>{{ t.name }} — ${{ t.price }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if desserts %}
+    <p><strong>Desserts:</strong></p>
+    <ul>
+      {% for d in desserts %}
+        <li>{{ d.name }} — ${{ d.price }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if drinks %}
+    <p><strong>Drinks:</strong></p>
+    <ul>
+      {% for d in drinks %}
+        <li>{{ d.name }} — ${{ d.price }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+
+  <h3>Customer</h3>
+  <p>Name: {{ customer.name }}</p>
+  <p>Phone: {{ customer.phone }}</p>
+  <p>Email: {{ customer.email }}</p>
+
+  {% if customer.instructions %}
+    <p><strong>Instructions:</strong> {{ customer.instructions }}</p>
+  {% endif %}
+
+  {% if special_ordered %}
+    <p><strong>Daily Special:</strong> {{ special_ordered.name }} — ${{ special_ordered.price }}</p>
+  {% endif %}
+
+
+  <h3>Total</h3>
+  <p><strong>${{ total }}</strong></p>
+
+  <h3>Ready Time</h3>
+  <p>Your order will be ready at <strong>{{ ready_time }}</strong> (in about {{ ready_minutes }} minutes).</p>
+
+  <p><a href="order">Place another order</a></p>
+{% endblock %}

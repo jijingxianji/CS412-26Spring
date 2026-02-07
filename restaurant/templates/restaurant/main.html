@@ -1,0 +1,20 @@
+{% extends "restaurant/base.html" %}
+{% block content %}
+  <h2>Main</h2>
+  <p><strong>Location:</strong> {{ location }}</p>
+
+  <h3>Hours</h3>
+  <ul>
+    {% for day, hrs in hours %}
+      <li>{{ day }}: {{ hrs }}</li>
+    {% endfor %}
+  </ul>
+
+  <h3>Photos</h3>
+  {% for url in photos %}
+    <img src="{{ url }}" alt="pizza photo"
+     style="max-width:700px; width:100%; height:auto; display:block; margin:12px 0;">
+  {% endfor %}
+
+  <p><a href="order">Order online →</a></p>
+{% endblock %}
