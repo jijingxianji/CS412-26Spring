@@ -1,12 +1,24 @@
+
+
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Mini Insta</title>
-</head>
-<body>
-  <h1>Mini Insta</h1>
-  <hr>
-  {% block content %}{% endblock %}
-</body>
+  <head>
+    <meta charset="utf-8">
+    <title>Mini Insta</title>
+  </head>
+
+  <body>
+    <h1>Mini Insta</h1>
+
+    <nav>
+      <a href="{% url 'show_all_profiles' %}">All Profiles</a>
+      {% if profile %}
+        | <a href="{% url 'create_post' profile.pk %}">Create Post</a>
+      {% endif %}
+    </nav>
+
+    <hr>
+
+    {% block content %}{% endblock %}
+  </body>
 </html>

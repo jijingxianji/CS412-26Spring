@@ -1,17 +1,51 @@
+
+
 {% extends "mini_insta/base.html" %}
 
 {% block content %}
   <h2>{{ profile.display_name }}</h2>
   <p><strong>@{{ profile.username }}</strong></p>
 
-  <img src="{{ profile.profile_image_url }}"
-       alt="profile image"
-       style="max-width: 320px; width:100%; height:auto; border-radius: 12px;">
+  <img
+    src="{{ profile.profile_image_url }}"
+    alt="profile image"
+    style="max-width: 320px; width: 100%; height: auto; border-radius: 12px;"
+  >
 
-  <p>{{ profile.bio_text }}</p>
+  {% if profile.bio_text %}
+    <p>{{ profile.bio_text }}</p>
+  {% endif %}
+
   <p><em>Joined: {{ profile.join_date }}</em></p>
 
   <hr>
+
+  <h3>Posts</h3>
+
+  {% for post in profile.get_all_posts %}
+    <div style="margin-bottom: 24px;">
+      <p><strong>{{ post.timestamp }}</strong></p>
+
+      {% if post.caption %}
+        <p>{{ post.caption }}</p>
+      {% endif %}
+
+      <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+        {% for photo in post.get_all_photos %}
+          <img
+            src="{{ photo.image_url }}"
+            alt="post photo"
+            style="max-width: 240px; width: 100%; height: auto; border-radius: 12px;"
+          >
+        {% empty %}
+          <p>No photos for this post.</p>
+        {% endfor %}
+      </div>
+    </div>
+    <hr>
+  {% empty %}
+    <p>No posts yet.</p>
+  {% endfor %}
+
   <p><a href="{% url 'show_all_profiles' %}">Back to all profiles</a></p>
 {% endblock %}
-

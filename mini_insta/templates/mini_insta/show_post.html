@@ -1,0 +1,19 @@
+
+
+{# mini_insta/templates/mini_insta/show_post.html #}
+{% extends "mini_insta/base.html" %}
+
+{% block content %}
+  <h2>Post</h2>
+  <p><strong>Caption:</strong> {{ post.caption }}</p>
+  <p><strong>Timestamp:</strong> {{ post.timestamp }}</p>
+
+  <h3>Photos</h3>
+  {% for photo in post.get_all_photos %}
+    <img src="{{ photo.image_url }}" alt="photo" style="max-width: 400px; margin: 8px;">
+  {% empty %}
+    <p>No photos for this post.</p>
+  {% endfor %}
+
+  <p><a href="{% url 'show_profile' post.profile.pk %}">Back to profile</a></p>
+{% endblock %}
