@@ -1,0 +1,11 @@
+{% extends "mini_insta/base.html" %}
+{% block content %}
+<h2>Update Post</h2>
+
+<form method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Save</button>
+  <a href="{% url 'show_post' object.pk %}">Cancel</a>
+</form>
+{% endblock %}

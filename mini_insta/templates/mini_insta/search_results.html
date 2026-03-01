@@ -1,0 +1,27 @@
+{% extends "mini_insta/base.html" %}
+{% block content %}
+<h2>Search Results for "{{ q }}"</h2>
+
+<h3>Profiles</h3>
+<ul>
+  {% for p in profiles %}
+    <li><a href="{% url 'show_profile' p.pk %}">{{ p.username }} — {{ p.display_name }}</a></li>
+  {% empty %}
+    <li>No matching profiles.</li>
+  {% endfor %}
+</ul>
+
+<h3>Posts</h3>
+<ul>
+  {% for post in posts %}
+    <li>
+      <a href="{% url 'show_post' post.pk %}">Post {{ post.pk }}</a>
+      {% if post.caption %} — {{ post.caption }}{% endif %}
+    </li>
+  {% empty %}
+    <li>No matching posts.</li>
+  {% endfor %}
+</ul>
+
+<p><a href="{% url 'show_profile' profile.pk %}">Back to profile</a></p>
+{% endblock %}

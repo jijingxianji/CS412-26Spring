@@ -5,6 +5,11 @@
 {% block content %}
   <h2>{{ profile.display_name }}</h2>
   <p><strong>@{{ profile.username }}</strong></p>
+  <p><a href="{% url 'update_profile' profile.pk %}">Update Profile</a></p>
+  <p>
+    <a href="{% url 'show_followers' profile.pk %}">Followers ({{ profile.get_num_followers }})</a> |
+    <a href="{% url 'show_following' profile.pk %}">Following ({{ profile.get_num_following }})</a>
+  </p>
 
   <img
     src="{{ profile.profile_image_url }}"
@@ -33,7 +38,7 @@
       <div style="display: flex; flex-wrap: wrap; gap: 12px;">
         {% for photo in post.get_all_photos %}
           <img
-            src="{{ photo.image_url }}"
+            src="{{ photo.get_image_url }}"
             alt="post photo"
             style="max-width: 240px; width: 100%; height: auto; border-radius: 12px;"
           >
@@ -41,11 +46,19 @@
           <p>No photos for this post.</p>
         {% endfor %}
       </div>
+
+      <p>
+        <a href="{% url 'show_post' post.pk %}">View Post</a> |
+        <a href="{% url 'update_post' post.pk %}">Update</a> |
+        <a href="{% url 'delete_post' post.pk %}">Delete</a>
+      </p>
+
     </div>
     <hr>
   {% empty %}
     <p>No posts yet.</p>
   {% endfor %}
+
 
   <p><a href="{% url 'show_all_profiles' %}">Back to all profiles</a></p>
 {% endblock %}

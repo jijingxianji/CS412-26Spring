@@ -1,0 +1,23 @@
+{% extends "mini_insta/base.html" %}
+{% block content %}
+<h2>Feed for {{ profile.display_name }}</h2>
+
+{% for post in posts %}
+  <div style="margin-bottom: 24px;">
+    <p><strong>{{ post.timestamp }}</strong></p>
+    {% if post.caption %}<p>{{ post.caption }}</p>{% endif %}
+
+    <div style="display:flex; flex-wrap:wrap; gap:12px;">
+      {% for photo in post.get_all_photos %}
+        <img src="{{ photo.get_image_url }}" alt="photo" style="max-width:240px; height:auto;">
+      {% endfor %}
+    </div>
+
+    <p><a href="{% url 'show_post' post.pk %}">View Post</a></p>
+  </div>
+{% empty %}
+  <p>No posts in your feed yet.</p>
+{% endfor %}
+
+<p><a href="{% url 'show_profile' profile.pk %}">Back to profile</a></p>
+{% endblock %}
