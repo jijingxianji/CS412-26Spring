@@ -41,9 +41,11 @@ urlpatterns = [
     path("profile/<int:pk>/following", ShowFollowingDetailView.as_view(), name="show_following"),
 
     path(
-        "login", auth_views.LoginView.as_view(
+        "login",
+        auth_views.LoginView.as_view(
             template_name="mini_insta/login.html",
-            next_page="/mini_insta/profile",
+            next_page=reverse_lazy("show_my_profile"),
+            redirect_authenticated_user=True,
         ),
         name="login",
     ),
