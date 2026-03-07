@@ -2,9 +2,9 @@
 {% block content %}
 <h2>Search</h2>
 
-<form method="GET" action="{% url 'search' profile.pk %}">
+<form method="GET" action="{% url 'search' %}">
   <input type="text" name="q" placeholder="Search..." />
   <button type="submit">Search</button>
-  <a href="{% url 'show_profile' profile.pk %}">Cancel</a>
+  <a href="{% url 'show_my_profile' %}">Cancel</a>
 </form>
 {% endblock %}

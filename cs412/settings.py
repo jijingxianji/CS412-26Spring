@@ -106,6 +106,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Redirect to home URL after login (Default redirects to /accounts/profile/)
+LOGIN_REDIRECT_URL = "/mini_insta/profile"
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/

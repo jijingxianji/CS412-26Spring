@@ -1,0 +1,16 @@
+{% extends "mini_insta/base.html" %}
+{% block content %}
+<h2>Create Profile</h2>
+
+<form method="post">
+  {% csrf_token %}
+
+  <h3>Create User Account</h3>
+  {{ user_form.as_p }}
+
+  <h3>Create Profile</h3>
+  {{ form.as_p }}
+
+  <button type="submit">Create Profile</button>
+</form>
+{% endblock %}

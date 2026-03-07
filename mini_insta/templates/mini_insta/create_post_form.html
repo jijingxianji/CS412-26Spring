@@ -5,7 +5,7 @@
 <h2>Create a Post for {{ profile.display_name }}</h2>
 
 <form method="POST"
-      action="{% url 'create_post' profile.pk %}"
+      action="{% url 'create_post' %}"
       enctype="multipart/form-data">
   {% csrf_token %}
   {{ form.as_p }}
@@ -16,6 +16,6 @@
   </p>
 
   <button type="submit">Submit</button>
-  <a href="{% url 'show_profile' profile.pk %}">Cancel</a>
+  <a href="{% url 'show_my_profile' %}">Cancel</a>
 </form>
 {% endblock %}

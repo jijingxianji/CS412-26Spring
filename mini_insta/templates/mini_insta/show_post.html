@@ -1,17 +1,18 @@
-
-
 {# mini_insta/templates/mini_insta/show_post.html #}
 {% extends "mini_insta/base.html" %}
 
 {% block content %}
   <h2>Post</h2>
-  <p>
-    <a href="{% url 'update_post' post.pk %}">Update Post</a> |
-    <a href="{% url 'delete_post' post.pk %}">Delete Post</a>
-  </p>
+
+  {% if request.user.is_authenticated and request.user == post.profile.user %}
+    <p>
+      <a href="{% url 'update_post' post.pk %}">Update Post</a> |
+      <a href="{% url 'delete_post' post.pk %}">Delete Post</a>
+    </p>
+  {% endif %}
+
   <p><strong>Caption:</strong> {{ post.caption }}</p>
   <p><strong>Timestamp:</strong> {{ post.timestamp }}</p>
-
 
   <h3>Photos</h3>
   {% for photo in post.get_all_photos %}
@@ -19,10 +20,25 @@
   {% empty %}
     <p>No photos for this post.</p>
   {% endfor %}
-  
-  
+
   <p><strong>Likes:</strong> {{ post.get_likes.count }}</p>
 
+
+  {% if request.user.is_authenticated and request.user != post.profile.user %}
+    {% if is_liked %}
+      <form method="post" action="{% url 'delete_like_post' post.pk %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Unlike</button>
+      </form>
+    {% else %}
+      <form method="post" action="{% url 'like_post' post.pk %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Like</button>
+      </form>
+    {% endif %}
+  {% endif %}
+
+  
   <h3>Comments</h3>
   <ul>
     {% for c in post.get_all_comments %}
@@ -31,8 +47,6 @@
       <li>No comments yet.</li>
     {% endfor %}
   </ul>
-
-
 
   <p><a href="{% url 'show_profile' post.profile.pk %}">Back to profile</a></p>
 {% endblock %}

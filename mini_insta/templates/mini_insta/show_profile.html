@@ -1,15 +1,31 @@
-
-
 {% extends "mini_insta/base.html" %}
 
 {% block content %}
   <h2>{{ profile.display_name }}</h2>
   <p><strong>@{{ profile.username }}</strong></p>
-  <p><a href="{% url 'update_profile' profile.pk %}">Update Profile</a></p>
+
+  {% if request.user.is_authenticated and request.user == profile.user %}
+    <p><a href="{% url 'update_profile' %}">Update Profile</a></p>
+  {% endif %}
+
   <p>
     <a href="{% url 'show_followers' profile.pk %}">Followers ({{ profile.get_num_followers }})</a> |
     <a href="{% url 'show_following' profile.pk %}">Following ({{ profile.get_num_following }})</a>
   </p>
+
+  {% if request.user.is_authenticated and request.user != profile.user %}
+    {% if is_following %}
+      <form method="post" action="{% url 'delete_follow_profile' profile.pk %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Unfollow</button>
+      </form>
+    {% else %}
+      <form method="post" action="{% url 'follow_profile' profile.pk %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Follow</button>
+      </form>
+    {% endif %}
+  {% endif %}
 
   <img
     src="{{ profile.profile_image_url }}"
@@ -48,17 +64,17 @@
       </div>
 
       <p>
-        <a href="{% url 'show_post' post.pk %}">View Post</a> |
-        <a href="{% url 'update_post' post.pk %}">Update</a> |
-        <a href="{% url 'delete_post' post.pk %}">Delete</a>
+        <a href="{% url 'show_post' post.pk %}">View Post</a>
+        {% if request.user.is_authenticated and request.user == post.profile.user %}
+          | <a href="{% url 'update_post' post.pk %}">Update</a>
+          | <a href="{% url 'delete_post' post.pk %}">Delete</a>
+        {% endif %}
       </p>
-
     </div>
     <hr>
   {% empty %}
     <p>No posts yet.</p>
   {% endfor %}
-
 
   <p><a href="{% url 'show_all_profiles' %}">Back to all profiles</a></p>
 {% endblock %}
