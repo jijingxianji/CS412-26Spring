@@ -45,8 +45,6 @@ INSTALLED_APPS = [
     'quotes', 
     'restaurant',
     'mini_insta',
-    'example',
-    'formdata',
     'voter_analytics',
 ]
 
