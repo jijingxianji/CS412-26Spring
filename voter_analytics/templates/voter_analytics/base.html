@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voter Analytics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table, th, td {
+            border: 1px solid #999;
+            border-collapse: collapse;
+            padding: 6px;
+        }
+        nav a {
+            margin-right: 15px;
+        }
+        form div {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'voters' %}">All Voters</a>
+        <a href="{% url 'graphs' %}">Graphs</a>
+    </nav>
+    <hr>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

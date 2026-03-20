@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     'quotes', 
     'restaurant',
     'mini_insta',
+    'example',
+    'formdata',
+    'voter_analytics',
 ]
 
 MIDDLEWARE = [
@@ -65,6 +68,8 @@ TEMPLATES = [
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
+            'string_if_invalid': "WARNING: {{%s}} not a valide context variable.",
+
             'context_processors': [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -130,7 +135,7 @@ STATIC_URL = '/static/'
 
 # --- deployment static/media settings ---
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
+# STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]

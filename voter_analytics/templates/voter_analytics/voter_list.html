@@ -1,0 +1,106 @@
+{% extends 'voter_analytics/base.html' %}
+
+{% block content %}
+<h1>Voter List</h1>
+
+<form method="get">
+    <div>
+        <label>Party:</label>
+        <select name="party">
+            <option value="">All</option>
+            {% for p in party_choices %}
+                <option value="{{ p }}" {% if selected_party == p %}selected{% endif %}>
+                    {{ p }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label>Min birth year:</label>
+        <select name="min_year">
+            <option value="">Any</option>
+            {% for y in year_choices %}
+                <option value="{{ y }}" {% if selected_min_year == y|stringformat:"s" %}selected{% endif %}>
+                    {{ y }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label>Max birth year:</label>
+        <select name="max_year">
+            <option value="">Any</option>
+            {% for y in year_choices %}
+                <option value="{{ y }}" {% if selected_max_year == y|stringformat:"s" %}selected{% endif %}>
+                    {{ y }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label>Voter score:</label>
+        <select name="voter_score">
+            <option value="">Any</option>
+            {% for s in score_choices %}
+                <option value="{{ s }}" {% if selected_score == s|stringformat:"s" %}selected{% endif %}>
+                    {{ s }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div>
+        <label><input type="checkbox" name="v20state" {% if checked_v20state %}checked{% endif %}> v20state</label>
+        <label><input type="checkbox" name="v21town" {% if checked_v21town %}checked{% endif %}> v21town</label>
+        <label><input type="checkbox" name="v21primary" {% if checked_v21primary %}checked{% endif %}> v21primary</label>
+        <label><input type="checkbox" name="v22general" {% if checked_v22general %}checked{% endif %}> v22general</label>
+        <label><input type="checkbox" name="v23town" {% if checked_v23town %}checked{% endif %}> v23town</label>
+    </div>
+
+    <button type="submit">Filter</button>
+    <a href="{% url 'voters' %}">Clear</a>
+</form>
+
+<p>Total on this page: {{ voters|length }}</p>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Street Address</th>
+        <th>Date of Birth</th>
+        <th>Party</th>
+        <th>Voter Score</th>
+    </tr>
+
+    {% for voter in voters %}
+    <tr>
+        <td>
+            <a href="{% url 'voter' voter.pk %}">
+                {{ voter.first_name }} {{ voter.last_name }}
+            </a>
+        </td>
+        <td>{{ voter.street_address }}</td>
+        <td>{{ voter.date_of_birth }}</td>
+        <td>{{ voter.party_affiliation }}</td>
+        <td>{{ voter.voter_score }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div style="margin-top: 15px;">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}&party={{ selected_party }}&min_year={{ selected_min_year }}&max_year={{ selected_max_year }}&voter_score={{ selected_score }}{% if checked_v20state %}&v20state=on{% endif %}{% if checked_v21town %}&v21town=on{% endif %}{% if checked_v21primary %}&v21primary=on{% endif %}{% if checked_v22general %}&v22general=on{% endif %}{% if checked_v23town %}&v23town=on{% endif %}">
+            Previous
+        </a>
+    {% endif %}
+
+    <span> Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} </span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}&party={{ selected_party }}&min_year={{ selected_min_year }}&max_year={{ selected_max_year }}&voter_score={{ selected_score }}{% if checked_v20state %}&v20state=on{% endif %}{% if checked_v21town %}&v21town=on{% endif %}{% if checked_v21primary %}&v21primary=on{% endif %}{% if checked_v22general %}&v22general=on{% endif %}{% if checked_v23town %}&v23town=on{% endif %}">
+            Next
+        </a>
+    {% endif %}
+</div>
+{% endblock %}
