@@ -174,9 +174,13 @@ class GraphListView(VoterFilterMixin, ListView):
         party_fig = go.Figure(
             data=[go.Pie(labels=party_labels, values=party_counts)]
         )
+        
         party_fig.update_layout(
-            title="Distribution of Voters by Party Affiliation"
+            title="Distribution of Voters by Party Affiliation",
+            showlegend=True
         )
+        party_fig.update_traces(textinfo="percent", textposition="inside")
+
         context["party_chart"] = plot(
             party_fig, output_type="div", include_plotlyjs=False
         )
