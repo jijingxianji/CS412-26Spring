@@ -1,0 +1,20 @@
+
+<!-- formdata/templates/formdata/form.html -->
+{% extends 'formdata/base.html' %}
+
+{% block content %}
+<div>
+    <h1>Contact Form</h1>
+
+    <form action="{% url 'submit' %}" method = "POST">
+        {% csrf_token %}
+
+        Name: <input type="text" name="name">
+        Favorate Color: <input type="text" name="color">
+        <input type="submit">
+
+    </form>
+
+</div>
+
+{% endblock %}

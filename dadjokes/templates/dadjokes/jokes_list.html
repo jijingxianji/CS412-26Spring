@@ -1,0 +1,21 @@
+{% extends 'dadjokes/base.html' %}
+
+{% block title %}All Jokes{% endblock %}
+
+{% block content %}
+    <h2 class="section-title">All Jokes</h2>
+
+    {% if jokes %}
+        <div class="cards-grid">
+            {% for joke in jokes %}
+                <a class="card list-card" href="{% url 'joke_detail' joke.pk %}">
+                    <span class="badge">Joke {{ joke.id }}</span>
+                    <p class="joke-text small">{{ joke.text }}</p>
+                    <p class="meta">Contributed by: {{ joke.contributor }}</p>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="card empty-state">No jokes yet.</div>
+    {% endif %}
+{% endblock %}

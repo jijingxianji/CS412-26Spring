@@ -1,0 +1,21 @@
+{% extends 'dadjokes/base.html' %}
+
+{% block title %}All Pictures{% endblock %}
+
+{% block content %}
+    <h2 class="section-title">All Pictures</h2>
+
+    {% if pictures %}
+        <div class="cards-grid">
+            {% for picture in pictures %}
+                <a class="card list-card" href="{% url 'picture_detail' picture.pk %}">
+                    <span class="badge">Picture {{ picture.id }}</span>
+                    <img class="thumb" src="{{ picture.image_url }}" alt="picture">
+                    <p class="meta">Contributed by: {{ picture.contributor }}</p>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="card empty-state">No pictures yet.</div>
+    {% endif %}
+{% endblock %}

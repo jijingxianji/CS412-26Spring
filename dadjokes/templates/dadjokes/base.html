@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DadJokes{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'dadjokes/styles.css' %}">
+</head>
+<body>
+    <div class="site-shell">
+        <header class="site-header">
+            <h1 class="brand">
+                <a href="{% url 'dadjokes_home' %}">DadJokes</a>
+            </h1>
+            <p class="subtitle">
+                Clean jokes, silly pictures, and a <span class="accent">much better looking page</span>.
+            </p>
+
+            <nav class="nav">
+                <a href="{% url 'dadjokes_home' %}">Home</a>
+                <a href="{% url 'dadjokes_random' %}">Random</a>
+                <a href="{% url 'jokes_list' %}">All Jokes</a>
+                <a href="{% url 'pictures_list' %}">All Pictures</a>
+                <a href="{% url 'api_jokes' %}">API Jokes</a>
+            </nav>
+        </header>
+
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

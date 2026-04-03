@@ -1,0 +1,18 @@
+{% extends 'dadjokes/base.html' %}
+
+{% block title %}Picture Detail{% endblock %}
+
+{% block content %}
+    <h2 class="section-title">Picture Detail</h2>
+
+    <div class="card">
+        <span class="badge">Picture {{ picture.id }}</span>
+        <img class="hero-img" src="{{ picture.image_url }}" alt="picture">
+        <p class="meta">Contributed by: {{ picture.contributor }}</p>
+        <p class="time-text">Created at: {{ picture.timestamp|date:"M d, Y H:i" }}</p>
+    </div>
+
+    <p class="center-actions">
+        <a class="cta alt" href="{% url 'pictures_list' %}">Back to All Pictures</a>
+    </p>
+{% endblock %}
