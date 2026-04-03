@@ -128,25 +128,22 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
-
-STATIC_URL = '/static/'
-
 
 # --- deployment static/media settings ---
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# STATIC_URL = '/static/'
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-MEDIA_URL = "/media/" 
+MEDIA_URL = "/media/"
 
 import socket
-CS_DEPLOYMENT_HOSTNAME = 'cs-webapps.bu.edu'
+HOSTNAME = socket.gethostname()
 
-if socket.gethostname() == CS_DEPLOYMENT_HOSTNAME:
+if 'csa2' in HOSTNAME or 'cs-webapps' in HOSTNAME:
     STATIC_URL = '/jixian77/static/'
     MEDIA_URL = '/jixian77/media/'
 
