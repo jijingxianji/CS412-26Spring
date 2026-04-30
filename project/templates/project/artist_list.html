@@ -1,0 +1,51 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<section class="panel">
+    <p class="eyebrow">Artists</p>
+    <h2 style="margin-top: 8px;" class="section-title">Artist Directory</h2>
+    <p class="section-subtitle">
+        Explore artists, review availability, and jump directly into their packages.
+    </p>
+
+    <div class="action-row">
+        <a class="button" href="{% url 'project:package_browse' %}">Browse All Packages</a>
+    </div>
+
+    {% if artists %}
+    <table>
+        <tr>
+            <th>Artist</th>
+            <th>Email</th>
+            <th>Bio</th>
+            <th>Availability</th>
+            <th>Packages</th>
+            <th>Actions</th>
+        </tr>
+        {% for artist in artists %}
+        <tr>
+            <td><a href="{% url 'project:artist_detail' artist.pk %}">{{ artist.display_name }}</a></td>
+            <td>{{ artist.email }}</td>
+            <td class="muted">{{ artist.bio|default:"No bio yet."|truncatechars:70 }}</td>
+            <td>
+                {% if artist.is_open_for_commissions %}
+                    <span class="status-pill status-active">Open</span>
+                {% else %}
+                    <span class="status-pill status-inactive">Closed</span>
+                {% endif %}
+            </td>
+            <td>{{ artist.packages.count }}</td>
+            <td>
+                <div class="actions-inline">
+                    <a class="button button-light" href="{% url 'project:artist_detail' artist.pk %}">View</a>
+                    <a class="button button-secondary" href="{% url 'project:package_browse' %}?artist={{ artist.pk }}">Packages</a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <div class="empty-state">No artists available yet.</div>
+    {% endif %}
+</section>
+{% endblock %}

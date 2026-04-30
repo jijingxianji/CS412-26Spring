@@ -1,0 +1,23 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<section class="panel">
+    <p class="eyebrow">Delete confirmation</p>
+    <h2 style="margin-top: 8px;">{{ page_title }}</h2>
+    <p class="section-subtitle">This action cannot be undone.</p>
+
+    <div class="panel" style="padding: 20px; background: #fff7f7; border: 1px solid #fecaca;">
+        <p style="margin: 0; font-size: 18px;">
+            Are you sure you want to delete <strong>{{ object }}</strong>?
+        </p>
+    </div>
+
+    <form method="post" style="margin-top: 20px;">
+        {% csrf_token %}
+        <div class="action-row">
+            <button class="button-danger" type="submit">Yes, delete</button>
+            <a class="button button-secondary" href="{{ back_url }}">Cancel</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

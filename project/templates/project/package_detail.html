@@ -1,0 +1,78 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<section class="panel">
+    <p class="eyebrow">Package detail</p>
+    <h2 style="margin-top: 8px;">{{ package.title }}</h2>
+
+    <div class="meta-grid">
+        <div class="meta-item">
+            <p class="meta-label">Artist</p>
+            <p class="meta-value"><a href="{% url 'project:artist_detail' package.artist.pk %}">{{ package.artist.display_name }}</a></p>
+        </div>
+        <div class="meta-item">
+            <p class="meta-label">Base price</p>
+            <p class="meta-value">${{ package.base_price }}</p>
+        </div>
+        <div class="meta-item">
+            <p class="meta-label">Turnaround</p>
+            <p class="meta-value">{{ package.turnaround_days }} days</p>
+        </div>
+        <div class="meta-item">
+            <p class="meta-label">Status</p>
+            <p class="meta-value">
+                {% if package.is_active %}
+                    <span class="status-pill status-active">Active</span>
+                {% else %}
+                    <span class="status-pill status-inactive">Inactive</span>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <div class="panel" style="padding: 20px; margin-top: 18px; background: var(--panel-soft);">
+        <h3 style="margin-top: 0;">Description</h3>
+        <p style="margin-bottom: 0; line-height: 1.7;">{{ package.description }}</p>
+    </div>
+
+    <div class="action-row">
+        <a class="button" href="{% url 'project:package_update' package.pk %}">Edit Package</a>
+        <a class="button button-danger" href="{% url 'project:package_delete' package.pk %}">Delete Package</a>
+        <a class="button button-light" href="{% url 'project:package_list' %}">Back to Packages</a>
+    </div>
+</section>
+
+<section class="panel">
+    <h3 class="section-title">Related Requests</h3>
+    {% if related_requests %}
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Client</th>
+            <th>Status</th>
+        </tr>
+        {% for req in related_requests %}
+        <tr>
+            <td><a href="{% url 'project:request_detail' req.pk %}">{{ req.request_title }}</a></td>
+            <td>{{ req.client }}</td>
+            <td>
+                {% if req.status == "submitted" %}
+                    <span class="status-pill status-submitted">{{ req.get_status_display }}</span>
+                {% elif req.status == "accepted" %}
+                    <span class="status-pill status-accepted">{{ req.get_status_display }}</span>
+                {% elif req.status == "in_progress" %}
+                    <span class="status-pill status-in-progress">{{ req.get_status_display }}</span>
+                {% elif req.status == "completed" %}
+                    <span class="status-pill status-completed">{{ req.get_status_display }}</span>
+                {% else %}
+                    <span class="status-pill status-canceled">{{ req.get_status_display }}</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <div class="empty-state">No requests yet for this package.</div>
+    {% endif %}
+</section>
+{% endblock %}

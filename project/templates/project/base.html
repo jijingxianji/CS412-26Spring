@@ -1,0 +1,510 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Commission Platform</title>
+    <style>
+        :root {
+            --bg: #eef2f4;
+            --panel: #ffffff;
+            --panel-soft: #f7f4ef;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --line: #ddd6cc;
+
+            --brand: #82796B;
+            --brand-dark: #6e6559;
+            --brand-light: #9b9184;
+            --brand-soft: #ebe6de;
+
+            --success-bg: #dcfce7;
+            --success-text: #166534;
+
+            --blue-bg: #dbeafe;
+            --blue-text: #1d4ed8;
+
+            --amber-bg: #fef3c7;
+            --amber-text: #92400e;
+
+            --purple-bg: #ede9fe;
+            --purple-text: #6d28d9;
+
+            --gray-bg: #e5e7eb;
+            --gray-text: #374151;
+
+            --danger-bg: #fee2e2;
+            --danger-text: #b91c1c;
+
+            --shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+            --radius: 22px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        a {
+            color: var(--brand-dark);
+            text-underline-offset: 2px;
+            text-decoration-thickness: 1.5px;
+        }
+
+        a:hover {
+            color: #554d43;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--brand), var(--brand-light));
+            color: white;
+            padding: 28px 32px 22px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        .site-title {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.4px;
+        }
+
+        .site-subtitle {
+            margin: 10px 0 0;
+            color: rgba(255, 255, 255, 0.88);
+            font-size: 14px;
+        }
+
+        nav {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            padding: 11px 16px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.12);
+            transition: 0.2s ease;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+        }
+
+        nav a:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.22);
+            transform: translateY(-1px);
+        }
+
+        main {
+            max-width: 1180px;
+            margin: 30px auto 42px;
+            padding: 0 18px;
+        }
+
+        .panel {
+            background: var(--panel);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 28px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(221, 214, 204, 0.75);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 24px;
+            align-items: stretch;
+        }
+
+        .hero h2 {
+            margin: 6px 0 12px;
+            font-size: 38px;
+            line-height: 1.08;
+            letter-spacing: -0.8px;
+        }
+
+        .eyebrow {
+            color: var(--brand);
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            margin: 0;
+        }
+
+        .lead {
+            color: var(--muted);
+            font-size: 17px;
+            line-height: 1.65;
+            margin-bottom: 18px;
+        }
+
+        .hero-side {
+            background: linear-gradient(180deg, #f8f5ef, #f2ede5);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 22px;
+        }
+
+        .hero-side h3 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .hero-side p {
+            color: var(--muted);
+            line-height: 1.75;
+            margin-bottom: 0;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 22px;
+        }
+
+        .stat-card {
+            background: var(--panel-soft);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 22px 20px;
+        }
+
+        .stat-number {
+            font-size: 34px;
+            font-weight: 800;
+            margin: 0 0 8px;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .section-title {
+            margin: 0 0 14px;
+            font-size: 20px;
+        }
+
+        .section-subtitle {
+            color: var(--muted);
+            margin-top: -4px;
+            margin-bottom: 18px;
+            line-height: 1.6;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 18px 0 0;
+        }
+
+        .button,
+        button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            background: var(--brand);
+            color: white;
+            padding: 12px 18px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 16px;
+            box-shadow: 0 2px 0 rgba(0,0,0,0.15);
+            transition: 0.2s ease;
+        }
+
+        .button:hover,
+        button:hover {
+            background: var(--brand-dark);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .button-secondary {
+            background: #7a7f8d;
+        }
+
+        .button-secondary:hover {
+            background: #666c79;
+        }
+
+        .button-danger {
+            background: #cf1d1d;
+        }
+
+        .button-danger:hover {
+            background: #ad1717;
+        }
+
+        .button-light {
+            background: var(--brand-soft);
+            color: var(--brand-dark);
+            box-shadow: none;
+        }
+
+        .button-light:hover {
+            background: #ddd5c8;
+            color: var(--brand-dark);
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin: 20px 0;
+        }
+
+        .meta-item {
+            background: var(--panel-soft);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 14px 16px;
+        }
+
+        .meta-label {
+            margin: 0 0 6px;
+            color: var(--muted);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .meta-value {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+        }
+
+        th {
+            text-align: left;
+            font-size: 15px;
+            padding: 14px 12px;
+            border-bottom: 2px solid var(--line);
+            color: var(--text);
+        }
+
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid var(--line);
+            vertical-align: top;
+        }
+
+        tr:hover td {
+            background: #fcfaf7;
+        }
+
+        .muted {
+            color: var(--muted);
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.1px;
+        }
+
+        .status-submitted {
+            background: var(--blue-bg);
+            color: var(--blue-text);
+        }
+
+        .status-accepted {
+            background: var(--amber-bg);
+            color: var(--amber-text);
+        }
+
+        .status-in-progress {
+            background: var(--purple-bg);
+            color: var(--purple-text);
+        }
+
+        .status-completed {
+            background: var(--success-bg);
+            color: var(--success-text);
+        }
+
+        .status-canceled {
+            background: var(--danger-bg);
+            color: var(--danger-text);
+        }
+
+        .status-active {
+            background: var(--success-bg);
+            color: var(--success-text);
+        }
+
+        .status-inactive {
+            background: var(--gray-bg);
+            color: var(--gray-text);
+        }
+
+        .empty-state {
+            padding: 24px;
+            border: 1px dashed var(--line);
+            border-radius: 16px;
+            background: var(--panel-soft);
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .actions-inline {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        form p {
+            margin-bottom: 18px;
+        }
+
+        label {
+            font-weight: 700;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            max-width: 760px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            border: 1px solid #bfcad5;
+            font-size: 16px;
+            background: white;
+            transition: 0.2s ease;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--brand);
+            box-shadow: 0 0 0 4px rgba(130, 121, 107, 0.15);
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+            max-width: none;
+            padding: 0;
+            accent-color: var(--brand);
+            transform: scale(1.1);
+            margin-right: 10px;
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .mini-card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .mini-card {
+            background: var(--panel-soft);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 16px;
+        }
+
+        .mini-card h4 {
+            margin: 0 0 8px;
+        }
+
+        .mini-card p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 920px) {
+            .hero,
+            .two-col,
+            .stats,
+            .meta-grid,
+            .mini-card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                padding: 22px 18px 16px;
+            }
+
+            .site-title {
+                font-size: 24px;
+            }
+
+            .hero h2 {
+                font-size: 30px;
+            }
+
+            main {
+                padding: 0 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="site-title">Art Commission Platform</h1>
+        <p class="site-subtitle">Browse artists, compare commission packages, and manage requests in one place.</p>
+        <nav>
+            <a href="{% url 'project:home' %}">Home</a>
+            <a href="{% url 'project:artist_list' %}">Artists</a>
+            <a href="{% url 'project:client_list' %}">Clients</a>
+            <a href="{% url 'project:package_list' %}">Packages</a>
+            <a href="{% url 'project:request_list' %}">Requests</a>
+            <a href="{% url 'project:package_browse' %}">Browse</a>
+            <a href="{% url 'project:request_report' %}">Report</a>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

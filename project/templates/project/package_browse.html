@@ -1,0 +1,94 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<section class="panel">
+    <p class="eyebrow">Browse</p>
+    <h2 style="margin-top: 8px;" class="section-title">Find the right package</h2>
+    <p class="section-subtitle">
+        Filter packages by keyword, artist, price, and artist availability.
+    </p>
+
+    <form method="get">
+        <div class="two-col">
+            <div>
+                <p>
+                    <label>Search</label>
+                    <input type="text" name="q" value="{{ q }}" placeholder="Search by title, description, or artist">
+                </p>
+
+                <p>
+                    <label>Artist</label>
+                    <select name="artist">
+                        <option value="">All artists</option>
+                        {% for artist in artists %}
+                            <option value="{{ artist.id }}" {% if artist_id == artist.id|stringformat:"s" %}selected{% endif %}>
+                                {{ artist.display_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </p>
+            </div>
+
+            <div>
+                <p>
+                    <label>Max price</label>
+                    <input type="number" step="0.01" name="max_price" value="{{ max_price }}" placeholder="Optional">
+                </p>
+
+                <p>
+                    <label>
+                        <input type="checkbox" name="only_open" value="1" {% if only_open == "1" %}checked{% endif %}>
+                        Only show artists who are open for commissions
+                    </label>
+                </p>
+            </div>
+        </div>
+
+        <div class="action-row">
+            <button type="submit">Apply Filters</button>
+            <a class="button button-light" href="{% url 'project:package_browse' %}">Clear Filters</a>
+        </div>
+    </form>
+</section>
+
+<section class="panel">
+    <h3 class="section-title">Matching Packages</h3>
+    <p class="section-subtitle">{{ packages|length }} result{{ packages|length|pluralize }} found.</p>
+
+    {% if packages %}
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Artist</th>
+            <th>Price</th>
+            <th>Turnaround</th>
+            <th>Artist Status</th>
+            <th>Actions</th>
+        </tr>
+        {% for package in packages %}
+        <tr>
+            <td><a href="{% url 'project:package_detail' package.pk %}">{{ package.title }}</a></td>
+            <td><a href="{% url 'project:artist_detail' package.artist.pk %}">{{ package.artist.display_name }}</a></td>
+            <td>${{ package.base_price }}</td>
+            <td>{{ package.turnaround_days }} days</td>
+            <td>
+                {% if package.artist.is_open_for_commissions %}
+                    <span class="status-pill status-active">Open</span>
+                {% else %}
+                    <span class="status-pill status-inactive">Closed</span>
+                {% endif %}
+            </td>
+            <td>
+                <div class="actions-inline">
+                    <a class="button button-light" href="{% url 'project:package_detail' package.pk %}">View</a>
+                    <a class="button button-secondary" href="{% url 'project:artist_detail' package.artist.pk %}">Artist</a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <div class="empty-state">No matching packages found.</div>
+    {% endif %}
+</section>
+{% endblock %}

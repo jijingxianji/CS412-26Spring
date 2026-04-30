@@ -1,0 +1,84 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<section class="panel">
+    <p class="eyebrow">Client detail</p>
+    <h2 style="margin-top: 8px;">{{ client.first_name }} {{ client.last_name }}</h2>
+    <p class="section-subtitle">{{ client.bio|default:"No bio yet." }}</p>
+
+    <div class="meta-grid">
+        <div class="meta-item">
+            <p class="meta-label">Email</p>
+            <p class="meta-value">{{ client.email }}</p>
+        </div>
+        <div class="meta-item">
+            <p class="meta-label">Requests</p>
+            <p class="meta-value">{{ requests|length }}</p>
+        </div>
+        <div class="meta-item">
+            <p class="meta-label">Created</p>
+            <p class="meta-value">{{ client.created_at|date:"M j, Y" }}</p>
+        </div>
+        <div class="meta-item">
+            <p class="meta-label">Latest Activity</p>
+            <p class="meta-value">
+                {% if requests %}
+                    {{ requests.0.created_at|date:"M j, Y" }}
+                {% else %}
+                    No requests
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <div class="action-row">
+        <a class="button" href="{% url 'project:request_create' %}">Create Request</a>
+        <a class="button button-secondary" href="{% url 'project:request_report' %}?client={{ client.pk }}">View Client Report</a>
+        <a class="button button-light" href="{% url 'project:client_list' %}">Back to Clients</a>
+    </div>
+</section>
+
+<section class="panel">
+    <h3 class="section-title">Request History</h3>
+
+    {% if requests %}
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Package</th>
+            <th>Status</th>
+            <th>Deadline</th>
+            <th>Actions</th>
+        </tr>
+        {% for req in requests %}
+        <tr>
+            <td><a href="{% url 'project:request_detail' req.pk %}">{{ req.request_title }}</a></td>
+            <td><a href="{% url 'project:package_detail' req.package.pk %}">{{ req.package }}</a></td>
+            <td>
+                {% if req.status == "submitted" %}
+                    <span class="status-pill status-submitted">{{ req.get_status_display }}</span>
+                {% elif req.status == "accepted" %}
+                    <span class="status-pill status-accepted">{{ req.get_status_display }}</span>
+                {% elif req.status == "in_progress" %}
+                    <span class="status-pill status-in-progress">{{ req.get_status_display }}</span>
+                {% elif req.status == "completed" %}
+                    <span class="status-pill status-completed">{{ req.get_status_display }}</span>
+                {% else %}
+                    <span class="status-pill status-canceled">{{ req.get_status_display }}</span>
+                {% endif %}
+            </td>
+            <td>{{ req.deadline }}</td>
+            <td>
+                <div class="actions-inline">
+                    <a class="button button-light" href="{% url 'project:request_detail' req.pk %}">View</a>
+                    <a class="button button-secondary" href="{% url 'project:request_update' req.pk %}">Edit</a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <div class="empty-state">This client has no requests yet.</div>
+    {% endif %}
+</section>
+{% endblock %}

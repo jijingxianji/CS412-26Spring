@@ -1,0 +1,50 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<section class="panel">
+    <h2 class="section-title">Commission Packages</h2>
+    <p class="section-subtitle">Browse all available package records and manage them from one place.</p>
+
+    <div class="action-row">
+        <a class="button" href="{% url 'project:package_create' %}">Create New Package</a>
+        <a class="button button-light" href="{% url 'project:package_browse' %}">Open Browse View</a>
+    </div>
+
+    {% if packages %}
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Artist</th>
+            <th>Price</th>
+            <th>Turnaround</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        {% for package in packages %}
+        <tr>
+            <td><a href="{% url 'project:package_detail' package.pk %}">{{ package.title }}</a></td>
+            <td><a href="{% url 'project:artist_detail' package.artist.pk %}">{{ package.artist.display_name }}</a></td>
+            <td>${{ package.base_price }}</td>
+            <td>{{ package.turnaround_days }} days</td>
+            <td>
+                {% if package.is_active %}
+                    <span class="status-pill status-active">Active</span>
+                {% else %}
+                    <span class="status-pill status-inactive">Inactive</span>
+                {% endif %}
+            </td>
+            <td>
+                <div class="actions-inline">
+                    <a class="button button-light" href="{% url 'project:package_detail' package.pk %}">View</a>
+                    <a class="button button-secondary" href="{% url 'project:package_update' package.pk %}">Edit</a>
+                    <a class="button button-danger" href="{% url 'project:package_delete' package.pk %}">Delete</a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <div class="empty-state">No packages available yet.</div>
+    {% endif %}
+</section>
+{% endblock %}

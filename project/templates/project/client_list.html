@@ -1,0 +1,43 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<section class="panel">
+    <p class="eyebrow">Clients</p>
+    <h2 style="margin-top: 8px;" class="section-title">Client Directory</h2>
+    <p class="section-subtitle">
+        Review client records, check request history, and jump into filtered reports.
+    </p>
+
+    <div class="action-row">
+        <a class="button" href="{% url 'project:request_create' %}">Create Request</a>
+    </div>
+
+    {% if clients %}
+    <table>
+        <tr>
+            <th>Client</th>
+            <th>Email</th>
+            <th>Bio</th>
+            <th>Requests</th>
+            <th>Actions</th>
+        </tr>
+        {% for client in clients %}
+        <tr>
+            <td><a href="{% url 'project:client_detail' client.pk %}">{{ client.first_name }} {{ client.last_name }}</a></td>
+            <td>{{ client.email }}</td>
+            <td class="muted">{{ client.bio|default:"No bio yet."|truncatechars:70 }}</td>
+            <td>{{ client.requests.count }}</td>
+            <td>
+                <div class="actions-inline">
+                    <a class="button button-light" href="{% url 'project:client_detail' client.pk %}">View</a>
+                    <a class="button button-secondary" href="{% url 'project:request_report' %}?client={{ client.pk }}">Report</a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <div class="empty-state">No clients available yet.</div>
+    {% endif %}
+</section>
+{% endblock %}

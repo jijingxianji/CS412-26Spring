@@ -1,0 +1,57 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<section class="panel">
+    <p class="eyebrow">Request detail</p>
+    <h2 style="margin-top: 8px;">{{ commission_request.request_title }}</h2>
+
+    <div class="meta-grid">
+        <div class="meta-item">
+            <p class="meta-label">Client</p>
+            <p class="meta-value"><a href="{% url 'project:client_detail' commission_request.client.pk %}">{{ commission_request.client }}</a></p>
+        </div>
+        <div class="meta-item">
+            <p class="meta-label">Package</p>
+            <p class="meta-value"><a href="{% url 'project:package_detail' commission_request.package.pk %}">{{ commission_request.package }}</a></p>
+        </div>
+        <div class="meta-item">
+            <p class="meta-label">Deadline</p>
+            <p class="meta-value">{{ commission_request.deadline }}</p>
+        </div>
+        <div class="meta-item">
+            <p class="meta-label">Status</p>
+            <p class="meta-value">
+                {% if commission_request.status == "submitted" %}
+                    <span class="status-pill status-submitted">{{ commission_request.get_status_display }}</span>
+                {% elif commission_request.status == "accepted" %}
+                    <span class="status-pill status-accepted">{{ commission_request.get_status_display }}</span>
+                {% elif commission_request.status == "in_progress" %}
+                    <span class="status-pill status-in-progress">{{ commission_request.get_status_display }}</span>
+                {% elif commission_request.status == "completed" %}
+                    <span class="status-pill status-completed">{{ commission_request.get_status_display }}</span>
+                {% else %}
+                    <span class="status-pill status-canceled">{{ commission_request.get_status_display }}</span>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <div class="panel" style="padding: 20px; margin-top: 18px; background: var(--panel-soft);">
+        <h3 style="margin-top: 0;">Request Description</h3>
+        <p style="margin-bottom: 0; line-height: 1.7;">{{ commission_request.request_description }}</p>
+    </div>
+
+    {% if commission_request.reference_image_url %}
+    <div class="panel" style="padding: 20px; margin-top: 18px; background: var(--panel-soft);">
+        <h3 style="margin-top: 0;">Reference Image</h3>
+        <p><a href="{{ commission_request.reference_image_url }}" target="_blank">Open reference image</a></p>
+    </div>
+    {% endif %}
+
+    <div class="action-row">
+        <a class="button" href="{% url 'project:request_update' commission_request.pk %}">Edit Request</a>
+        <a class="button button-danger" href="{% url 'project:request_delete' commission_request.pk %}">Delete Request</a>
+        <a class="button button-light" href="{% url 'project:request_list' %}">Back to Requests</a>
+    </div>
+</section>
+{% endblock %}

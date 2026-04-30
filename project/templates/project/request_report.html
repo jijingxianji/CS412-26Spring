@@ -1,0 +1,136 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<section class="panel">
+    <p class="eyebrow">Report</p>
+    <h2 style="margin-top: 8px;" class="section-title">Request Report</h2>
+    <p class="section-subtitle">
+        Filter requests by status, artist, and client, then review totals and matching records.
+    </p>
+
+    <form method="get">
+        <div class="two-col">
+            <div>
+                <p>
+                    <label>Status</label>
+                    <select name="status">
+                        <option value="">All statuses</option>
+                        {% for value, label in status_choices %}
+                            <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </p>
+
+                <p>
+                    <label>Artist</label>
+                    <select name="artist">
+                        <option value="">All artists</option>
+                        {% for artist in artists %}
+                            <option value="{{ artist.id }}" {% if artist_id == artist.id|stringformat:"s" %}selected{% endif %}>
+                                {{ artist.display_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </p>
+            </div>
+
+            <div>
+                <p>
+                    <label>Client</label>
+                    <select name="client">
+                        <option value="">All clients</option>
+                        {% for client in clients %}
+                            <option value="{{ client.id }}" {% if client_id == client.id|stringformat:"s" %}selected{% endif %}>
+                                {{ client.first_name }} {{ client.last_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </p>
+            </div>
+        </div>
+
+        <div class="action-row">
+            <button type="submit">Run Report</button>
+            <a class="button button-light" href="{% url 'project:request_report' %}">Clear Filters</a>
+        </div>
+    </form>
+</section>
+
+<section class="panel">
+    <h3 class="section-title">Status Summary</h3>
+
+    {% if status_counts %}
+    <div class="mini-card-grid">
+        {% for row in status_counts %}
+        <div class="mini-card">
+            <h4 style="margin-bottom: 10px;">
+                {% if row.status == "submitted" %}
+                    <span class="status-pill status-submitted">Submitted</span>
+                {% elif row.status == "accepted" %}
+                    <span class="status-pill status-accepted">Accepted</span>
+                {% elif row.status == "in_progress" %}
+                    <span class="status-pill status-in-progress">In Progress</span>
+                {% elif row.status == "completed" %}
+                    <span class="status-pill status-completed">Completed</span>
+                {% else %}
+                    <span class="status-pill status-canceled">Canceled</span>
+                {% endif %}
+            </h4>
+            <p>{{ row.total }} request{{ row.total|pluralize }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">No data.</div>
+    {% endif %}
+</section>
+
+<section class="panel">
+    <h3 class="section-title">Filtered Requests</h3>
+    <p class="section-subtitle">{{ requests|length }} matching request{{ requests|length|pluralize }}.</p>
+
+    {% if requests %}
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Client</th>
+            <th>Package</th>
+            <th>Status</th>
+            <th>Deadline</th>
+            <th>Actions</th>
+        </tr>
+        {% for req in requests %}
+        <tr>
+            <td><a href="{% url 'project:request_detail' req.pk %}">{{ req.request_title }}</a></td>
+            <td><a href="{% url 'project:client_detail' req.client.pk %}">{{ req.client }}</a></td>
+            <td><a href="{% url 'project:package_detail' req.package.pk %}">{{ req.package }}</a></td>
+            <td>
+                {% if req.status == "submitted" %}
+                    <span class="status-pill status-submitted">{{ req.get_status_display }}</span>
+                {% elif req.status == "accepted" %}
+                    <span class="status-pill status-accepted">{{ req.get_status_display }}</span>
+                {% elif req.status == "in_progress" %}
+                    <span class="status-pill status-in-progress">{{ req.get_status_display }}</span>
+                {% elif req.status == "completed" %}
+                    <span class="status-pill status-completed">{{ req.get_status_display }}</span>
+                {% else %}
+                    <span class="status-pill status-canceled">{{ req.get_status_display }}</span>
+                {% endif %}
+            </td>
+            <td>{{ req.deadline }}</td>
+            <td>
+                <div class="actions-inline">
+                    <a class="button button-light" href="{% url 'project:request_detail' req.pk %}">View</a>
+                    <a class="button button-secondary" href="{% url 'project:request_update' req.pk %}">Edit</a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <div class="empty-state">No matching requests found.</div>
+    {% endif %}
+</section>
+{% endblock %}

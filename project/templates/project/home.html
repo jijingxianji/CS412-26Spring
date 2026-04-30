@@ -1,0 +1,110 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<section class="panel hero">
+    <div>
+        <p class="eyebrow">Commission marketplace</p>
+        <h2>Find the right artist and manage your commission from start to finish.</h2>
+        <p class="lead">
+            This platform helps clients browse commission packages, compare artists,
+            submit requests, and track request status through a clean workflow.
+        </p>
+
+        <div class="action-row">
+            <a class="button" href="{% url 'project:package_browse' %}">Browse Packages</a>
+            <a class="button button-secondary" href="{% url 'project:request_create' %}">Create Request</a>
+            <a class="button button-light" href="{% url 'project:request_report' %}">View Report</a>
+        </div>
+    </div>
+
+    <div class="hero-side">
+        <h3>Why this app works</h3>
+        <p>
+            It combines the most important parts of an art commission workflow:
+            artist discovery, package comparison, request submission, status tracking,
+            and simple record management for both clients and artists.
+        </p>
+    </div>
+</section>
+
+<section class="stats">
+    <div class="stat-card">
+        <p class="stat-number">{{ artist_count }}</p>
+        <p class="stat-label">Artists</p>
+    </div>
+    <div class="stat-card">
+        <p class="stat-number">{{ client_count }}</p>
+        <p class="stat-label">Clients</p>
+    </div>
+    <div class="stat-card">
+        <p class="stat-number">{{ package_count }}</p>
+        <p class="stat-label">Packages</p>
+    </div>
+    <div class="stat-card">
+        <p class="stat-number">{{ request_count }}</p>
+        <p class="stat-label">Requests</p>
+    </div>
+</section>
+
+<section class="two-col">
+    <div class="panel">
+        <h3 class="section-title">Quick actions</h3>
+        <p class="section-subtitle">Use the main workflows directly from the home page.</p>
+
+        <div class="mini-card-grid">
+            <div class="mini-card">
+                <h4><a href="{% url 'project:package_create' %}">Create Package</a></h4>
+                <p>Add a new commission package for an artist.</p>
+            </div>
+            <div class="mini-card">
+                <h4><a href="{% url 'project:request_create' %}">Create Request</a></h4>
+                <p>Submit a new commission request from a client.</p>
+            </div>
+            <div class="mini-card">
+                <h4><a href="{% url 'project:package_list' %}">Manage Packages</a></h4>
+                <p>Review, edit, and delete package records.</p>
+            </div>
+            <div class="mini-card">
+                <h4><a href="{% url 'project:request_report' %}">Request Report</a></h4>
+                <p>Filter requests and view status totals.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <h3 class="section-title">Recent requests</h3>
+        <p class="section-subtitle">Latest request activity across the platform.</p>
+
+        {% if recent_requests %}
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Client</th>
+                <th>Status</th>
+            </tr>
+            {% for req in recent_requests %}
+            <tr>
+                <td><a href="{% url 'project:request_detail' req.pk %}">{{ req.request_title }}</a></td>
+                <td>{{ req.client }}</td>
+                <td>
+                    {% if req.status == "submitted" %}
+                        <span class="status-pill status-submitted">{{ req.get_status_display }}</span>
+                    {% elif req.status == "accepted" %}
+                        <span class="status-pill status-accepted">{{ req.get_status_display }}</span>
+                    {% elif req.status == "in_progress" %}
+                        <span class="status-pill status-in-progress">{{ req.get_status_display }}</span>
+                    {% elif req.status == "completed" %}
+                        <span class="status-pill status-completed">{{ req.get_status_display }}</span>
+                    {% else %}
+                        <span class="status-pill status-canceled">{{ req.get_status_display }}</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <div class="empty-state">No requests yet.</div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

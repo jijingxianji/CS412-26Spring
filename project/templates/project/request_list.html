@@ -1,0 +1,56 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<section class="panel">
+    <h2 class="section-title">Commission Requests</h2>
+    <p class="section-subtitle">Track request status, review details, and manage request records.</p>
+
+    <div class="action-row">
+        <a class="button" href="{% url 'project:request_create' %}">Create New Request</a>
+        <a class="button button-light" href="{% url 'project:request_report' %}">Open Report View</a>
+    </div>
+
+    {% if requests %}
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Client</th>
+            <th>Package</th>
+            <th>Status</th>
+            <th>Deadline</th>
+            <th>Actions</th>
+        </tr>
+        {% for req in requests %}
+        <tr>
+            <td><a href="{% url 'project:request_detail' req.pk %}">{{ req.request_title }}</a></td>
+            <td><a href="{% url 'project:client_detail' req.client.pk %}">{{ req.client }}</a></td>
+            <td><a href="{% url 'project:package_detail' req.package.pk %}">{{ req.package }}</a></td>
+            <td>
+                {% if req.status == "submitted" %}
+                    <span class="status-pill status-submitted">{{ req.get_status_display }}</span>
+                {% elif req.status == "accepted" %}
+                    <span class="status-pill status-accepted">{{ req.get_status_display }}</span>
+                {% elif req.status == "in_progress" %}
+                    <span class="status-pill status-in-progress">{{ req.get_status_display }}</span>
+                {% elif req.status == "completed" %}
+                    <span class="status-pill status-completed">{{ req.get_status_display }}</span>
+                {% else %}
+                    <span class="status-pill status-canceled">{{ req.get_status_display }}</span>
+                {% endif %}
+            </td>
+            <td>{{ req.deadline }}</td>
+            <td>
+                <div class="actions-inline">
+                    <a class="button button-light" href="{% url 'project:request_detail' req.pk %}">View</a>
+                    <a class="button button-secondary" href="{% url 'project:request_update' req.pk %}">Edit</a>
+                    <a class="button button-danger" href="{% url 'project:request_delete' req.pk %}">Delete</a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <div class="empty-state">No requests available yet.</div>
+    {% endif %}
+</section>
+{% endblock %}

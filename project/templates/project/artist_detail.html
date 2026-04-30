@@ -1,0 +1,84 @@
+{% extends 'project/base.html' %}
+
+{% block content %}
+<section class="panel">
+    <p class="eyebrow">Artist detail</p>
+    <h2 style="margin-top: 8px;">{{ artist.display_name }}</h2>
+    <p class="section-subtitle">{{ artist.bio|default:"No bio yet." }}</p>
+
+    <div class="meta-grid">
+        <div class="meta-item">
+            <p class="meta-label">Email</p>
+            <p class="meta-value">{{ artist.email }}</p>
+        </div>
+        <div class="meta-item">
+            <p class="meta-label">Availability</p>
+            <p class="meta-value">
+                {% if artist.is_open_for_commissions %}
+                    <span class="status-pill status-active">Open for commissions</span>
+                {% else %}
+                    <span class="status-pill status-inactive">Currently closed</span>
+                {% endif %}
+            </p>
+        </div>
+        <div class="meta-item">
+            <p class="meta-label">Packages</p>
+            <p class="meta-value">{{ packages|length }}</p>
+        </div>
+        <div class="meta-item">
+            <p class="meta-label">Created</p>
+            <p class="meta-value">{{ artist.created_at|date:"M j, Y" }}</p>
+        </div>
+    </div>
+
+    {% if artist.profile_image_url %}
+    <div class="panel" style="padding: 20px; margin-top: 18px; background: var(--panel-soft);">
+        <h3 style="margin-top: 0;">Profile image</h3>
+        <img src="{{ artist.profile_image_url }}" alt="{{ artist.display_name }}" style="max-width: 280px; width: 100%; border-radius: 14px; border: 1px solid var(--line);">
+    </div>
+    {% endif %}
+
+    <div class="action-row">
+        <a class="button" href="{% url 'project:package_browse' %}?artist={{ artist.pk }}">Browse This Artist's Packages</a>
+        <a class="button button-light" href="{% url 'project:artist_list' %}">Back to Artists</a>
+    </div>
+</section>
+
+<section class="panel">
+    <h3 class="section-title">Packages by {{ artist.display_name }}</h3>
+
+    {% if packages %}
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Turnaround</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        {% for package in packages %}
+        <tr>
+            <td><a href="{% url 'project:package_detail' package.pk %}">{{ package.title }}</a></td>
+            <td>${{ package.base_price }}</td>
+            <td>{{ package.turnaround_days }} days</td>
+            <td>
+                {% if package.is_active %}
+                    <span class="status-pill status-active">Active</span>
+                {% else %}
+                    <span class="status-pill status-inactive">Inactive</span>
+                {% endif %}
+            </td>
+            <td>
+                <div class="actions-inline">
+                    <a class="button button-light" href="{% url 'project:package_detail' package.pk %}">View</a>
+                    <a class="button button-secondary" href="{% url 'project:package_update' package.pk %}">Edit</a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <div class="empty-state">This artist does not have any packages yet.</div>
+    {% endif %}
+</section>
+{% endblock %}

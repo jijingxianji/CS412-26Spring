@@ -1,5 +1,5 @@
 """
-URL configuration for cs412 project.
+URL configuration for core project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/6.0/topics/http/urls/
@@ -15,22 +15,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-
-from django.conf import settings
-from django.conf.urls.static import static
-
+from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("quotes/", include("quotes.urls")), 
-    path("restaurant/", include("restaurant.urls")),
-    path("mini_insta/", include("mini_insta.urls")),
-    # path("voter_analytics/", include("voter_analytics.urls")),
-    path("dadjokes/", include("dadjokes.urls")),
-    path("project/", include("project.urls")),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
